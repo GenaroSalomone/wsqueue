@@ -2,8 +2,8 @@
 //Referencias HTML
 const lblEscritorio = document.querySelector('h1');
 const btnAtender = document.querySelector('button');
-
-
+const lblTicket = document.querySelector('small');
+const divAlert = document.querySelector('.alert');
 
 const searchParams = new URLSearchParams(window.location.search);
 if (!searchParams.has('escritorio')) {
@@ -13,8 +13,7 @@ if (!searchParams.has('escritorio')) {
 
 const desk = searchParams.get('escritorio');
 lblEscritorio.innerText = desk;
-
-console.log({ escritorio: desk });
+divAlert.style.display = 'none';
 
 
 const socket = io();
@@ -37,8 +36,12 @@ socket.on('disconnect', () => {
 
 btnAtender.addEventListener('click', () => {
 
-  // socket.emit('next-ticket', null, (ticket) => {
-  //   lblNewTicket.innerText = ticket;
-  // });
+  socket.emit('handle-ticket', { desk }, ({ ok, ticket }) => {
+    if (!ok) {
+      lblTicket.innerText = 'Nadie';
+      return divAlert.style.display = '';
+    }
 
+    lblTicket.innerText = `Ticket ${ticket.numero}`
+  })
 });
