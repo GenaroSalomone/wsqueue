@@ -76,7 +76,7 @@ class TicketControl {
     const ticket = new Ticket(this.last, null);
     this.tickets.push(ticket);
     this.saveDB();
-    return 'Ticket' + ticket.numero;
+    return 'Ticket ' + ticket.numero;
   }
 
   /**
